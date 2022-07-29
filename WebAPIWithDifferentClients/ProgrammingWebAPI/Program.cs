@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProgrammingDataContext.Data;
+using ProgrammingServices.Services;
 using ProgrammingWebAPI.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IDbInitializer, DbInitializer>();
+builder.Services.AddTransient<IProgrammingLanguageService, ProgrammingLanguageService>();
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
