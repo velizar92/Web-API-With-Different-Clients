@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ProgrammingDataContext\ProgrammingDataContext.csproj" />
     <ProjectReference Include="..\ProgrammingModels\ProgrammingModels.csproj" />
+    <ProjectReference Include="..\ProgrammingServices\ProgrammingServices.csproj" />
   </ItemGroup>
 
 </Project>
