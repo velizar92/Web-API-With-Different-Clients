@@ -11,7 +11,7 @@ using ProgrammingDataContext.Data;
 namespace ProgrammingDataContext.Migrations
 {
     [DbContext(typeof(ProgrammingDbContext))]
-    [Migration("20220729183154_InitialCreate")]
+    [Migration("20220729195228_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,7 +53,6 @@ namespace ProgrammingDataContext.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")

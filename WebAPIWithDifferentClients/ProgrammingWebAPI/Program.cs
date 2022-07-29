@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProgrammingDataContext.Data;
+using ProgrammingWebAPI.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IDbInitializer, DbInitializer>();
+
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -26,8 +29,20 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+SeedDatabase();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.InitializeDatabase(app);
+    }
+}

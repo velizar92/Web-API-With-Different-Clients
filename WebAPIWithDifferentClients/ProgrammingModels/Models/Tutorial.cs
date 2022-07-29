@@ -13,8 +13,7 @@
 
         [Required]
         public string Description { get; set; }
-
-        [Required]
+      
         public string? Content { get; set; }
 
         [ForeignKey(nameof(ProgrammingLanguage))]
