@@ -13,6 +13,6 @@
         Task<ProgrammingLanguage> GetResource(string resourceUrl, int id);
         Task CreateResource(string resourceUrl, ProgrammingLanguage programmingLanguage);
         Task UpdateResource(string resourceUrl, ProgrammingLanguage programmingLanguage);
-        Task DeleteResource(string resourceUrl);
+        Task DeleteResource(string resourceUrl, int id);
     }
 }

@@ -40,9 +40,11 @@
 
         public async Task<ProgrammingLanguage> GetResource(string resourceUrl, int id)
         {
+            resourceUrl = resourceUrl.TrimEnd('/');
+
             try
             {
-                var streamTask = s_client.GetStreamAsync(resourceUrl + id);
+                var streamTask = s_client.GetStreamAsync($"{resourceUrl}/{id}");
 
                 var resource = await JsonSerializer.DeserializeAsync<ProgrammingLanguage>(await streamTask);
 
@@ -60,37 +62,61 @@
 
         public async Task CreateResource(string resourceUrl, ProgrammingLanguage programmingLanguage)
         {
-            string jsonPayload = JsonSerializer.Serialize<ProgrammingLanguage>(programmingLanguage);
+            try
+            {
+                string jsonPayload = JsonSerializer.Serialize<ProgrammingLanguage>(programmingLanguage);
 
-            StringContent httpContent = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json");
+                StringContent httpContent = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json");
 
-            var response = await s_client.PostAsync(resourceUrl, httpContent);
+                var response = await s_client.PostAsync(resourceUrl, httpContent);
 
-            string result = response.Content.ReadAsStringAsync().Result;
-            _logger.Log(result);
+                string result = response.Content.ReadAsStringAsync().Result;
+                _logger.Log(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
 
         //The 'id' of programming language object also must be filled
         public async Task UpdateResource(string resourceUrl, ProgrammingLanguage programmingLanguage)
         {
-            string jsonPayload = JsonSerializer.Serialize<ProgrammingLanguage>(programmingLanguage);
+            try
+            {
+                string jsonPayload = JsonSerializer.Serialize<ProgrammingLanguage>(programmingLanguage);
 
-            StringContent httpContent = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json");
+                StringContent httpContent = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json");
 
-            var response = await s_client.PutAsync(resourceUrl, httpContent);
+                var response = await s_client.PutAsync(resourceUrl, httpContent);
 
-            string result = response.Content.ReadAsStringAsync().Result;
-            _logger.Log(result);
+                string result = response.Content.ReadAsStringAsync().Result;
+                _logger.Log(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }   
         }
 
 
-        public async Task DeleteResource(string resourceUrl)
+        public async Task DeleteResource(string resourceUrl, int id)
         {
-            var response = await s_client.DeleteAsync(resourceUrl);
+            try
+            {
+                resourceUrl = resourceUrl.TrimEnd('/');
 
-            string result = response.Content.ReadAsStringAsync().Result;
-            _logger.Log(result);
+                var response = await s_client.DeleteAsync($"{resourceUrl}/{id}");
+
+                string result = response.Content.ReadAsStringAsync().Result;
+                _logger.Log(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         }
     }
 }
