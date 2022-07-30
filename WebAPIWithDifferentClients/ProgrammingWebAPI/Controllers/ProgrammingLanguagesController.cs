@@ -30,7 +30,12 @@
         {
             var programmingLanguage = await _programmingLanguageService.GetById(id);
 
-            return programmingLanguage;
+            if(programmingLanguage != null)
+            {
+                return programmingLanguage;
+            }
+
+            return BadRequest();
         }
 
         [HttpPost("create")]       
