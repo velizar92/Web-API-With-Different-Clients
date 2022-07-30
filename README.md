@@ -1,5 +1,8 @@
 # Web-API-With-Different-Clients
-This repository contains one Web API and Console Web Client both written on C#.
+This repository contains one very simple Web API and Console Web Client both written on C#. The main purpose of these projects is to demonstrate how can be consumed Web API  from different Web Clients (Console, MAUI, Windows Form). Different kind of applications can be attached as a clients to the same API and can consume it. For the moment the only avaliable client is the Console Web client.
+
+Using Swagger can be seen the API documentation. :)
+
 
 WebAPI Swagger view:
 
