@@ -61,8 +61,9 @@
             var programmingLanguage =
                 await _dbContext
                         .ProgrammingLanguages
+                        .Where(pl => pl.Id == id)
                         .Select(pl => new ProgrammingLanguageServiceModel
-                        {
+                        {         
                             Id = pl.Id,
                             Name = pl.Name,
                             Description = pl.Description,
