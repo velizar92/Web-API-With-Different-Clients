@@ -8,8 +8,8 @@
     using System.Text.Json;
     using System.Threading.Tasks;
     using ProgrammingConsoleWebClient.ViewModels;
-  
-    public class HttpWebClient
+
+    public class HttpWebClient : IHttpWebClient
     {
         private static readonly HttpClient s_client = new HttpClient();
         private readonly ILogger _logger;
@@ -20,13 +20,44 @@
             s_client.DefaultRequestHeaders.Accept.Clear();
         }
 
-        public async Task<IEnumerable<ProgrammingLanguage>> GetResource(string resourceUrl)
-        {
-            var streamTask = s_client.GetStreamAsync(resourceUrl);
-            var resource = await JsonSerializer.DeserializeAsync<List<ProgrammingLanguage>>(await streamTask);
 
-            return resource;
+        public async Task<IEnumerable<ProgrammingLanguage>> GetResources(string resourceUrl)
+        {
+            try
+            {
+                var streamTask = s_client.GetStreamAsync(resourceUrl);
+                var resource = await JsonSerializer.DeserializeAsync<List<ProgrammingLanguage>>(await streamTask);
+
+                return resource;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return null;
         }
+
+        public async Task<ProgrammingLanguage> GetResource(string resourceUrl, int id)
+        {
+            try
+            {
+                var streamTask = s_client.GetStreamAsync(resourceUrl + id);
+
+                var resource = await JsonSerializer.DeserializeAsync<ProgrammingLanguage>(await streamTask);
+
+                return resource;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return null;
+        }
+
+
         public async Task CreateResource(string resourceUrl, ProgrammingLanguage programmingLanguage)
         {
             string jsonPayload = JsonSerializer.Serialize<ProgrammingLanguage>(programmingLanguage);
@@ -39,6 +70,8 @@
             _logger.Log(result);
         }
 
+
+        //The 'id' of programming language object also must be filled
         public async Task UpdateResource(string resourceUrl, ProgrammingLanguage programmingLanguage)
         {
             string jsonPayload = JsonSerializer.Serialize<ProgrammingLanguage>(programmingLanguage);
@@ -50,6 +83,7 @@
             string result = response.Content.ReadAsStringAsync().Result;
             _logger.Log(result);
         }
+
 
         public async Task DeleteResource(string resourceUrl)
         {
