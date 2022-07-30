@@ -1,5 +1,5 @@
 # Web-API-With-Different-Clients
-This repository contains one Web API and bundle of C# Web clients (Console, Windows Forms, MAUI, etc.) that consume the same Web API.
+This repository contains one Web API and Console Web Client both written on C#.
 
 WebAPI Swagger view:
 
