@@ -16,76 +16,104 @@
 
         public Engine(IHttpWebClient webClient, ILogger logger)
         {
-            _logger = logger;
             _webClient = webClient;
+            _logger = logger;
         }
 
         public async Task Run()
         {
             int id = 0;
+            int optionNumber = 0;
             ProgrammingLanguage language = null;
             IEnumerable<ProgrammingLanguage> languages = new List<ProgrammingLanguage>();
 
             ShowMenu();
 
             Console.WriteLine("Please choose your option: ");
-            int optionNumber = int.Parse(Console.ReadLine());
 
             while (true)
-            {
-                switch (optionNumber)
+            {              
+                bool success = int.TryParse(Console.ReadLine(), out optionNumber);
+                if (success)
                 {
-                    case 1:
-                        language = CreateLocalResource();
-                        await _webClient.CreateResource("https://localhost:7046/api/ProgrammingLanguages/create", language);
-                        languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                        WebDataViewer.PrintLanguages(languages);
-                        languages.ToList().Clear();
-                        break;
-                    case 2:
-                        languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                        WebDataViewer.PrintLanguages(languages);
-                        languages.ToList().Clear();
-                        break;
-                    case 3:
-                        languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                        WebDataViewer.PrintLanguages(languages);
-                        Console.WriteLine("Please type resource id of language that you want to get: ");
-                        id = int.Parse(Console.ReadLine());
-                        language = await _webClient.GetResource("https://localhost:7046/api/ProgrammingLanguages", id);
-                        WebDataViewer.PrintLanguage(language);
-                        break;
-                    case 4:
-                        languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                        WebDataViewer.PrintLanguages(languages);
-                        Console.WriteLine("Please type resource id of language that you want to update: ");
-                        id = int.Parse(Console.ReadLine());
-                        language = await _webClient.GetResource("https://localhost:7046/api/ProgrammingLanguages", id);
-                        language = UpdateProgrammingLanguage(language);
-                        await _webClient.UpdateResource($"https://localhost:7046/api/ProgrammingLanguages/update/{id}", language);
-                        languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                        WebDataViewer.PrintLanguages(languages);
-                        languages.ToList().Clear();
-                        break;
-                    case 5:
-                        languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                        WebDataViewer.PrintLanguages(languages);
-                        Console.WriteLine("Please type resource id of language that you want to delete: ");
-                        id = int.Parse(Console.ReadLine());
-                        await _webClient.DeleteResource("https://localhost:7046/api/ProgrammingLanguages/delete", id);
-                        languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                        WebDataViewer.PrintLanguages(languages);
-                        languages.ToList().Clear();
-                        break;
-                    default:
-                        Console.WriteLine("Unknown option");
-                        break;
+                    break;
                 }
-
-                Console.WriteLine();
-                Console.WriteLine("Please choose your next option: ");
-                optionNumber = int.Parse(Console.ReadLine());
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Please choose a valid option from the menu between 1-6!");
+                }
             }
+           
+            try
+            {
+                while (true)
+                {
+                    switch (optionNumber)
+                    {
+                        case 1:
+                            language = CreateLocalResource();
+                            await _webClient.CreateResource("https://localhost:7046/api/ProgrammingLanguages/create", language);
+                            languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
+                            WebDataViewer.PrintLanguages(languages);
+                            languages.ToList().Clear();
+                            break;
+                        case 2:
+                            Console.ForegroundColor = ConsoleColor.White;
+                            languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
+                            WebDataViewer.PrintLanguages(languages);
+                            languages.ToList().Clear();
+                            break;
+                        case 3:
+                            languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
+                            WebDataViewer.PrintLanguages(languages);
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("Please type resource id of language that you want to get: ");
+                            id = int.Parse(Console.ReadLine());
+                            language = await _webClient.GetResource("https://localhost:7046/api/ProgrammingLanguages", id);
+                            WebDataViewer.PrintLanguage(language);
+                            break;
+                        case 4:
+                            languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
+                            WebDataViewer.PrintLanguages(languages);
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.WriteLine("Please type resource id of language that you want to update: ");
+                            id = int.Parse(Console.ReadLine());
+                            language = await _webClient.GetResource("https://localhost:7046/api/ProgrammingLanguages", id);
+                            language = UpdateProgrammingLanguage(language);
+                            await _webClient.UpdateResource($"https://localhost:7046/api/ProgrammingLanguages/update/{id}", language);
+                            languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
+                            WebDataViewer.PrintLanguages(languages);
+                            languages.ToList().Clear();
+                            break;
+                        case 5:
+                            languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
+                            WebDataViewer.PrintLanguages(languages);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Please type resource id of language that you want to delete: ");
+                            id = int.Parse(Console.ReadLine());
+                            await _webClient.DeleteResource("https://localhost:7046/api/ProgrammingLanguages/delete", id);
+                            languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
+                            WebDataViewer.PrintLanguages(languages);
+                            languages.ToList().Clear();
+                            break;
+                        default:
+                            Console.WriteLine("Unknown option");
+                            break;
+                    }
+
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("Please choose your next option: ");
+                    optionNumber = int.Parse(Console.ReadLine());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+            }
+
         }
 
         private void ShowMenu()
@@ -105,6 +133,8 @@
 
         private ProgrammingLanguage CreateLocalResource()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
+
             Console.WriteLine("Please type language name: ");
             string name = Console.ReadLine();
             Console.WriteLine("Please type language description: ");
@@ -121,10 +151,13 @@
 
         private void ShowProgrammingLanguageInfo(ProgrammingLanguage programmingLanguage)
         {
-            Console.WriteLine("=========================");
-            Console.WriteLine("Name =====> " + programmingLanguage.Name);
-            Console.WriteLine("Description =====> " + programmingLanguage.Description);
-            Console.WriteLine("=========================");
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            var table = new ConsoleTable("Name", "Description");
+
+            table.AddRow(programmingLanguage.Name, programmingLanguage.Description);
+
+            table.Write();
         }
 
 
@@ -132,17 +165,19 @@
         {
             ShowProgrammingLanguageInfo(programmingLanguage);
 
+            Console.ForegroundColor = ConsoleColor.Green;
+
             Console.WriteLine();
             Console.WriteLine("Which property do you want to change: ");
-            string property = Console.ReadLine();
+            string property = Console.ReadLine().ToLower();
 
             switch (property)
             {
-                case "Name":
+                case "name":
                     Console.WriteLine("Type the new Name:");
                     programmingLanguage.Name = Console.ReadLine();
                     break;
-                case "Description":
+                case "description":
                     Console.WriteLine("Type the new Description:");
                     programmingLanguage.Description = Console.ReadLine();
                     break;
