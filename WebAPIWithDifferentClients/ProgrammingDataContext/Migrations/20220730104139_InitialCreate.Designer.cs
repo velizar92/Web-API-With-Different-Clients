@@ -11,7 +11,7 @@ using ProgrammingDataContext.Data;
 namespace ProgrammingDataContext.Migrations
 {
     [DbContext(typeof(ProgrammingDbContext))]
-    [Migration("20220729195228_InitialCreate")]
+    [Migration("20220730104139_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
