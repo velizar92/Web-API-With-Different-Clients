@@ -57,13 +57,8 @@
 
 
         [HttpDelete("delete/{id}")]      
-        public async Task<ActionResult> Delete(int id, [FromBody] ProgrammingLanguage programmingLanguage)
-        {
-            if (id != programmingLanguage.Id)
-            {
-                return BadRequest();
-            }
-
+        public async Task<ActionResult> Delete(int id)
+        {           
             await _programmingLanguageService.Delete(id);
 
             return NoContent();

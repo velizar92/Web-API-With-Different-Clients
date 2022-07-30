@@ -18,6 +18,7 @@
 
         [ForeignKey(nameof(ProgrammingLanguage))]
         public int ProgrammingLanguageId { get; set; }
+
         public ProgrammingLanguage? ProgrammingLanguage { get; set; }
     }
 }

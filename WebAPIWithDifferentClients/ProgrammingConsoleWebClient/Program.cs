@@ -7,30 +7,33 @@
     using System.Threading.Tasks;
     using OfficeOpenXml;
     using ProgrammingConsoleWebClient.ViewModels;
-  
+
     internal class Program
     {
-        private static readonly HttpClient client = new HttpClient();
+        private static readonly HttpClient _client = new HttpClient();
         static async Task Main(string[] args)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-            client.DefaultRequestHeaders.Accept.Clear();
+            ConsoleLogger consoleLogger = new ConsoleLogger();
+            HttpWebClient webClient = new HttpWebClient(consoleLogger);
 
             //ProgrammingLanguage programmingLanguage = new ProgrammingLanguage()
             //{
             //    Name = "Python",
             //    Description = "Python is cool language.",
-            //    Tutorials = new List<Tutorial>()               
+            //    Tutorials = new List<Tutorial>()
             //};
 
             //await CreateResource("https://localhost:7046/api/ProgrammingLanguages/create", programmingLanguage);
 
-            IEnumerable<ProgrammingLanguage> languages 
-                = await GetResource("https://localhost:7046/api/ProgrammingLanguages/all");
+            //await webClient.DeleteResource("https://localhost:7046/api/ProgrammingLanguages/delete/19");
+
+            IEnumerable<ProgrammingLanguage> languages
+                = await webClient.GetResource("https://localhost:7046/api/ProgrammingLanguages/all");
 
             foreach (var language in languages)
             {
+                Console.WriteLine(language.Id);
                 Console.WriteLine(language.Name);
                 Console.WriteLine(language.Description);
                 Console.WriteLine("======Tutorials:======");
@@ -43,24 +46,5 @@
             }
         }
 
-        static async Task<IEnumerable<ProgrammingLanguage>> GetResource(string resourceUrl)
-        {
-            var streamTask = client.GetStreamAsync(resourceUrl);
-            var languages = await JsonSerializer.DeserializeAsync<List<ProgrammingLanguage>>(await streamTask);
-
-            return languages;
-        }
-
-        static async Task CreateResource(string resourceUrl, ProgrammingLanguage programmingLanguage)
-        {
-            string jsonPayload = JsonSerializer.Serialize<ProgrammingLanguage>(programmingLanguage);
-
-            StringContent httpContent = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync(resourceUrl, httpContent);
-
-            string result = response.Content.ReadAsStringAsync().Result;
-            Console.WriteLine(result);
-        }
     }
 }

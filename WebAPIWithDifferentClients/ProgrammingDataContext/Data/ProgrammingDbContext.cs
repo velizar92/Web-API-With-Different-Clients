@@ -16,8 +16,16 @@
 
         }
 
-
         public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
         public DbSet<Tutorial> Tutorials { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {        
+            modelBuilder.Entity<Tutorial>(e =>
+                     e.HasOne(t => t.ProgrammingLanguage)
+                    .WithMany(pl => pl.Tutorials)
+                    .HasForeignKey(t => t.ProgrammingLanguageId)
+                    .OnDelete(DeleteBehavior.Cascade));       
+        }
     }
 }

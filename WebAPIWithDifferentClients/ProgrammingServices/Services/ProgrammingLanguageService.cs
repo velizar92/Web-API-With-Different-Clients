@@ -32,10 +32,13 @@
 
         public async Task Delete(int id)
         {
-            var programmingLanguage = _dbContext.ProgrammingLanguages.FindAsync(id);
+            var programmingLanguage = await _dbContext.ProgrammingLanguages.FindAsync(id);
 
-            _dbContext.Remove(programmingLanguage);
-            await _dbContext.SaveChangesAsync();
+            if (programmingLanguage != null)
+            {
+                _dbContext.Remove(programmingLanguage);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
 
@@ -73,6 +76,7 @@
 
         public async Task Update(ProgrammingLanguage programmingLanguage)
         {
+           
             _dbContext.Entry(programmingLanguage).State = EntityState.Modified;
 
             await _dbContext.SaveChangesAsync();
