@@ -39,8 +39,7 @@
                     break;
                 }
                 else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
+                {                 
                     Console.WriteLine("Please choose a valid option from the menu between 1-6!");
                 }
             }
@@ -58,16 +57,14 @@
                             WebDataViewer.PrintLanguages(languages);
                             languages.ToList().Clear();
                             break;
-                        case 2:
-                            Console.ForegroundColor = ConsoleColor.White;
+                        case 2:                         
                             languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
                             WebDataViewer.PrintLanguages(languages);
                             languages.ToList().Clear();
                             break;
                         case 3:
                             languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                            WebDataViewer.PrintLanguages(languages);
-                            Console.ForegroundColor = ConsoleColor.White;
+                            WebDataViewer.PrintLanguages(languages);                          
                             Console.WriteLine("Please type resource id of language that you want to get: ");
                             id = int.Parse(Console.ReadLine());
                             language = await _webClient.GetResource("https://localhost:7046/api/ProgrammingLanguages", id);
@@ -75,8 +72,7 @@
                             break;
                         case 4:
                             languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                            WebDataViewer.PrintLanguages(languages);
-                            Console.ForegroundColor = ConsoleColor.Blue;
+                            WebDataViewer.PrintLanguages(languages);                          
                             Console.WriteLine("Please type resource id of language that you want to update: ");
                             id = int.Parse(Console.ReadLine());
                             language = await _webClient.GetResource("https://localhost:7046/api/ProgrammingLanguages", id);
@@ -88,8 +84,7 @@
                             break;
                         case 5:
                             languages = await _webClient.GetResources("https://localhost:7046/api/ProgrammingLanguages/all");
-                            WebDataViewer.PrintLanguages(languages);
-                            Console.ForegroundColor = ConsoleColor.Red;
+                            WebDataViewer.PrintLanguages(languages);                           
                             Console.WriteLine("Please type resource id of language that you want to delete: ");
                             id = int.Parse(Console.ReadLine());
                             await _webClient.DeleteResource("https://localhost:7046/api/ProgrammingLanguages/delete", id);
@@ -102,15 +97,13 @@
                             break;
                     }
 
-                    Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine();                
                     Console.WriteLine("Please choose your next option: ");
                     optionNumber = int.Parse(Console.ReadLine());
                 }
             }
             catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
+            {             
                 Console.WriteLine(ex.Message);
             }
 
@@ -132,9 +125,7 @@
         }
 
         private ProgrammingLanguage CreateLocalResource()
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-
+        {          
             Console.WriteLine("Please type language name: ");
             string name = Console.ReadLine();
             Console.WriteLine("Please type language description: ");
@@ -150,9 +141,7 @@
 
 
         private void ShowProgrammingLanguageInfo(ProgrammingLanguage programmingLanguage)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-
+        {           
             var table = new ConsoleTable("Name", "Description");
 
             table.AddRow(programmingLanguage.Name, programmingLanguage.Description);
@@ -164,9 +153,7 @@
         private ProgrammingLanguage UpdateProgrammingLanguage(ProgrammingLanguage programmingLanguage)
         {
             ShowProgrammingLanguageInfo(programmingLanguage);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-
+         
             Console.WriteLine();
             Console.WriteLine("Which property do you want to change: ");
             string property = Console.ReadLine().ToLower();
